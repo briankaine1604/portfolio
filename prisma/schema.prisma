@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+ 
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Blog {
+id String @id @default(uuid())
+  title       String
+  excerpt     String
+  categoryId String
+  category   Category? @relation(fields: [categoryId], references: [id])
+  body        String   @db.Text // Use Text for long content
+  readTime    String
+  featured    Boolean  @default(false)
+  slug        String   @unique // URL-friendly identifier
+  published   Boolean  @default(false) // Draft vs published
+  publishedAt DateTime? // When it was published
+  updatedAt   DateTime @updatedAt // Track changes
+  createdAt   DateTime @default(now()) // Track creation
+  // SEO & metadata
+  metaTitle       String?
+  metaDescription String?
+  ogImage         String? // Social media preview image
+  // Content organization
+  tags            String[] // Array of tags
+  // Analytics/engagement
+  views           Int      @default(0)
+  likes           Int      @default(0)
+  @@map("blogs")
+}
+
+model Project {
+ id String @id @default(uuid())
+ title       String
+ description String   @db.Text
+ tech        String[] // Array of technologies
+ status      String   // LIVE, IN_PROGRESS, COMPLETED, ARCHIVED
+ 
+ // URLs and links
+ slug        String   @unique // URL-friendly identifier
+ liveUrl     String?  // Live demo URL
+ githubUrl   String?  // GitHub repository URL
+ caseStudyUrl String? // Link to detailed case study
+ // Media
+ thumbnail   String?  // Main project image
+ images      String[] // Additional screenshots/images
+ videoUrl    String?  // Demo video URL
+ 
+ // Content
+ longDescription String? @db.Text // Detailed description
+ challenges      String? @db.Text // What problems you solved
+ learnings       String? @db.Text // What you learned
+ 
+ // Organization
+ categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+ featured    Boolean  @default(false)
+ priority    Int      @default(0) // For ordering projects
+ 
+ // SEO
+ metaTitle       String?
+ metaDescription String?
+ ogImage         String?
+ 
+ // Analytics
+ views       Int      @default(0)
+ likes       Int      @default(0)
+ 
+ // Timestamps
+ createdAt   DateTime @default(now())
+ updatedAt   DateTime @updatedAt
+ completedAt DateTime? // When project was finished
+ 
+ @@map("projects")
+}
+
+model Category {
+  id    String  @id @default(uuid())
+  name     String  @unique
+  slug     String  @unique
+  blogs    Blog[]
+  projects Project[]
+}
