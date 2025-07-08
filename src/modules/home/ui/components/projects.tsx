@@ -1,12 +1,20 @@
 import { prisma } from "@/lib/prisma";
 import { ProjectCard } from "@/modules/projects/ui/components/project-card";
 import { Status } from "@/modules/types";
+import { Project } from "@prisma/client";
 
 export default async function Projects() {
-  const projects = await prisma.project.findMany({
-    orderBy: { priority: "desc" },
-    take: 4,
-  });
+  let projects: Project[] = [];
+
+  try {
+    projects = await prisma.project.findMany({
+      orderBy: { priority: "desc" },
+      take: 4,
+    });
+  } catch (error) {
+    console.error("❌ Failed to load projects:", error);
+    // Return empty array or some fallback data
+  }
 
   return (
     <section className="bg-gray-100 py-20 px-8">
