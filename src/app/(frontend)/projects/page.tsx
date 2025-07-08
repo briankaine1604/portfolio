@@ -1,10 +1,17 @@
 import { prisma } from "@/lib/prisma";
 import { ProjectCard } from "@/modules/projects/ui/components/project-card";
 import { Status } from "@/modules/types";
+import { Project } from "@prisma/client";
 // make sure this matches where STATUSES is exported from
 
 const Page = async () => {
-  const projects = await prisma.project.findMany();
+  let projects: Project[] = []; // ✅ Explicitly typed
+
+  try {
+    projects = await prisma.project.findMany();
+  } catch (error) {
+    console.error("❌ Failed to load projects:", error);
+  }
 
   return (
     <div className=" min-h-screen bg-gray-100 py-16 px-8 ">

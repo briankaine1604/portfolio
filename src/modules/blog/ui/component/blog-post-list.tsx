@@ -12,20 +12,22 @@ interface BlogPostsListProps {
   filters: Filters;
 }
 
+// Correct return type with included category relation
+type BlogWithCategory = Prisma.BlogGetPayload<{
+  include: { category: true };
+}>;
+
 export async function BlogPostsList({ filters }: BlogPostsListProps) {
   const where: Prisma.BlogWhereInput = {
-    published: true, // only published posts
+    published: true,
   };
 
   if (filters.category) {
     where.categoryId = filters.category;
   }
 
-  if (filters.tags && filters.tags.length > 0) {
-    // tags is string[]
-    where.tags = {
-      hasSome: filters.tags,
-    };
+  if (filters.tags?.length) {
+    where.tags = { hasSome: filters.tags };
   }
 
   let orderBy: Prisma.BlogOrderByWithRelationInput = {
@@ -35,13 +37,17 @@ export async function BlogPostsList({ filters }: BlogPostsListProps) {
   if (filters.sort === "oldest") orderBy = { publishedAt: "asc" };
   if (filters.sort === "popular") orderBy = { views: "desc" };
 
-  const blogPosts = await prisma.blog.findMany({
-    where,
-    orderBy,
-    include: {
-      category: true,
-    },
-  });
+  let blogPosts: BlogWithCategory[] = [];
+
+  try {
+    blogPosts = await prisma.blog.findMany({
+      where,
+      orderBy,
+      include: { category: true },
+    });
+  } catch (error) {
+    console.error("❌ Failed to fetch blog posts:", error);
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -63,7 +69,7 @@ export async function BlogPostsList({ filters }: BlogPostsListProps) {
             <div className="p-6">
               <div className="flex justify-between items-center mb-4 font-mono text-xs">
                 <span className="bg-black text-white px-2 py-1 font-black">
-                  {post.category?.name || "Uncategorized"}
+                  {post.category?.name ?? "Uncategorized"}
                 </span>
                 <span className="text-gray-600">{post.readTime}</span>
               </div>
