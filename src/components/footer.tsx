@@ -84,32 +84,32 @@ export function Footer() {
               </h4>
 
               <div className="space-y-2">
-                <a
+                {/* <a
                   href="https://github.com/briankaine"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block font-mono text-sm uppercase tracking-wide hover:text-gray-800 transition-colors"
                 >
                   GITHUB
-                </a>
+                </a> */}
                 <a
-                  href="https://linkedin.com/in/briankaine"
+                  href="https://www.linkedin.com/in/brian-ikeogu-876023199/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block font-mono text-sm uppercase tracking-wide hover:text-gray-800 transition-colors"
                 >
                   LINKEDIN
                 </a>
-                <a
+                {/* <a
                   href="https://twitter.com/briankaine"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block font-mono text-sm uppercase tracking-wide hover:text-gray-800 transition-colors"
                 >
                   TWITTER
-                </a>
+                </a> */}
                 <a
-                  href="mailto:hello@briankaine.dev"
+                  href="mailto:info@briankaine.com"
                   className="block font-mono text-sm uppercase tracking-wide hover:text-gray-800 transition-colors"
                 >
                   EMAIL
@@ -132,7 +132,7 @@ export function Footer() {
 
             {/* Fun tagline */}
             <div className="font-mono text-xs text-gray-400 uppercase tracking-wide">
-              CRAFTED WITH ❤️ AND TOO MUCH CAFFEINE
+              CRAFTED WITH ❤️ AND TOO MUCH SWEAT
             </div>
           </div>
         </div>

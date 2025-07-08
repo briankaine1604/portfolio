@@ -171,7 +171,10 @@ export const projectRouter = createTRPCRouter({
         metaTitle: z.string().optional(),
         metaDescription: z.string().optional(),
         ogImage: z.string().url().optional(),
-        completedAt: z.date().optional(),
+        completedAt: z
+          .union([z.string(), z.date()])
+          .optional()
+          .transform((val) => (val ? new Date(val) : undefined)),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -233,7 +236,10 @@ export const projectRouter = createTRPCRouter({
         metaTitle: z.string().optional(),
         metaDescription: z.string().optional(),
         ogImage: z.string().url().optional(),
-        completedAt: z.date().optional(),
+        completedAt: z
+          .union([z.string(), z.date()])
+          .optional()
+          .transform((val) => (val ? new Date(val) : undefined)),
       })
     )
     .mutation(async ({ ctx, input }) => {

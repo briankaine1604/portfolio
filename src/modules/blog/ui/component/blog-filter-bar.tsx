@@ -38,88 +38,77 @@ export function BlogFilters() {
   };
 
   return (
-    <div className="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] mb-6 relative max-w-6xl mx-auto">
-      {/* Top-right accent square */}
-      <div className="absolute -top-1 -right-1 w-3 h-3 bg-lime-400 border-2 border-black"></div>
-
-      {/* Header */}
-      <div className="p-3 border-b-2 border-black flex items-center justify-between">
-        <p className="font-bold uppercase text-sm">Filters</p>
-        {hasAnyFilters && (
-          <button
-            className="font-mono text-xs uppercase text-gray-600 hover:text-black underline transition-colors"
-            onClick={onClear}
-            type="button"
-          >
-            Clear
-          </button>
-        )}
+    <div className="flex flex-wrap items-center gap-3 mb-6 p-4 bg-gray-50 border-l-4 border-lime-400 ">
+      {/* Category Filter */}
+      <div className="flex items-center gap-2">
+        <span className="font-mono text-xs uppercase text-gray-600">
+          Category:
+        </span>
+        <select
+          className="bg-white border-2 border-black px-2 py-1 font-mono text-xs focus:ring-0 focus:border-lime-400 transition-colors"
+          value={filters.category}
+          onChange={(e) => onChange("category", e.target.value)}
+        >
+          <option value="">All</option>
+          {categories &&
+            categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+        </select>
       </div>
 
-      <div className="p-3 space-y-3">
-        {/* Category & Sort - Same Row */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block font-mono text-xs uppercase mb-1 text-gray-700">
-              Category
-            </label>
-            <select
-              className="w-full bg-gray-50 border-2 border-black px-2 py-1.5 font-mono text-xs focus:ring-0 focus:border-black"
-              value={filters.category}
-              onChange={(e) => onChange("category", e.target.value)}
-            >
-              <option value="">All</option>
-              {categories &&
-                categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block font-mono text-xs uppercase mb-1 text-gray-700">
-              Sort By
-            </label>
-            <select
-              className="w-full bg-gray-50 border-2 border-black px-2 py-1.5 font-mono text-xs focus:ring-0 focus:border-black"
-              value={filters.sort}
-              onChange={(e) =>
-                onChange("sort", e.target.value as (typeof sortOptions)[number])
-              }
-            >
-              {sortOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Tags */}
-        <div>
-          <label className="block font-mono text-xs uppercase mb-1 text-gray-700">
-            Tags
-          </label>
-          <input
-            type="text"
-            placeholder="react, ai, css..."
-            value={filters.tags.join(", ")}
-            onChange={(e) =>
-              onChange(
-                "tags",
-                e.target.value
-                  .split(",")
-                  .map((s) => s.trim())
-                  .filter(Boolean)
-              )
-            }
-            className="w-full bg-gray-50 border-2 border-black px-2 py-1.5 font-mono text-xs focus:ring-0 focus:border-black"
-          />
-        </div>
+      {/* Sort Filter */}
+      <div className="flex items-center gap-2">
+        <span className="font-mono text-xs uppercase text-gray-600">Sort:</span>
+        <select
+          className="bg-white border-2 border-black px-2 py-1 font-mono text-xs focus:ring-0 focus:border-lime-400 transition-colors"
+          value={filters.sort}
+          onChange={(e) =>
+            onChange("sort", e.target.value as (typeof sortOptions)[number])
+          }
+        >
+          {sortOptions.map((option) => (
+            <option key={option} value={option}>
+              {option.charAt(0).toUpperCase() + option.slice(1)}
+            </option>
+          ))}
+        </select>
       </div>
+
+      {/* Tags Filter */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <span className="font-mono text-xs uppercase text-gray-600 whitespace-nowrap">
+          Tags:
+        </span>
+        <input
+          type="text"
+          placeholder="react, ai, css..."
+          value={filters.tags.join(", ")}
+          onChange={(e) =>
+            onChange(
+              "tags",
+              e.target.value
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean)
+            )
+          }
+          className="flex-1 bg-white border-2 border-black px-2 py-1 font-mono text-xs focus:ring-0 focus:border-lime-400 transition-colors min-w-0"
+        />
+      </div>
+
+      {/* Clear Button */}
+      {hasAnyFilters && (
+        <button
+          className="bg-black text-white px-3 py-1 border-2 border-black font-mono text-xs uppercase hover:bg-gray-800 transition-colors"
+          onClick={onClear}
+          type="button"
+        >
+          Clear
+        </button>
+      )}
     </div>
   );
 }

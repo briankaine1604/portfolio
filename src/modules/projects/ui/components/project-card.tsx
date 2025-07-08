@@ -1,5 +1,7 @@
+"use client";
 import { Status } from "@/modules/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 // Adjust the path to wherever it's exported
 
@@ -31,8 +33,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   thumbnail,
   slug,
 }) => {
+  const router = useRouter();
   return (
-    <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] transition-all duration-200 relative group cursor-pointer">
+    <div
+      onClick={() => router.push(`/projects/${slug}`)}
+      className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] hover:shadow-[4px_4px_0px_0px_#000] transition-all duration-200 relative group cursor-pointer"
+    >
       {/* Status badge */}
       <div
         className={`absolute -top-2 -right-2 px-3 py-1 border-2 border-black font-black text-xs uppercase tracking-wide ${badgeColors[status]}`}

@@ -1,72 +1,424 @@
 "use client";
-import { Button } from "@/components/button";
-import { CodeBlock } from "./code-block";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
+const skillsRotation = [
+  "FULLSTACK",
+  "FRONTEND",
+  "BACKEND",
+  "REACT",
+  "NODE.JS",
+  "GSAP",
+  "PAYLOAD",
+  "ECOMMERCE",
+];
+
+const Button = ({
+  variant,
+  onClick,
+  children,
+}: {
+  variant: "primary" | "accent";
+  onClick: () => void;
+  children: React.ReactNode;
+}) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useGSAP(() => {
+    if (buttonRef.current) {
+      // Hover animations with GSAP
+      const handleMouseEnter = () => {
+        gsap.to(buttonRef.current, {
+          x: 4,
+          y: 4,
+          duration: 0.2,
+          ease: "power2.out",
+        });
+      };
+
+      const handleMouseLeave = () => {
+        gsap.to(buttonRef.current, {
+          x: 0,
+          y: 0,
+          duration: 0.2,
+          ease: "power2.out",
+        });
+      };
+
+      buttonRef.current?.addEventListener("mouseenter", handleMouseEnter);
+      buttonRef.current?.addEventListener("mouseleave", handleMouseLeave);
+
+      return () => {
+        buttonRef.current?.removeEventListener("mouseenter", handleMouseEnter);
+        buttonRef.current?.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    }
+  }, []);
+
+  const base =
+    "px-6 py-3 font-black uppercase tracking-wide border-4 border-black transition-all duration-200";
+  const variants = {
+    primary: "bg-black text-white shadow-[4px_4px_0px_0px_#000]",
+    accent: "bg-red-500 text-white shadow-[4px_4px_0px_0px_#000]",
+  };
+
+  return (
+    <button
+      ref={buttonRef}
+      className={`${base} ${variants[variant]}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
+
+const TypewriterText = ({
+  words,
+  speed = 100,
+  deleteSpeed = 50,
+  pauseTime = 2000,
+}: {
+  words: string[];
+  speed?: number;
+  deleteSpeed?: number;
+  pauseTime?: number;
+}) => {
+  const [displayText, setDisplayText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [pause, setPause] = useState(false);
+  const cursorRef = useRef<HTMLSpanElement>(null);
+
+  useGSAP(() => {
+    // Animate cursor with GSAP instead of CSS
+    if (cursorRef.current) {
+      gsap.to(cursorRef.current, {
+        opacity: 0,
+        duration: 0.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "power2.inOut",
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const word = words[index];
+    if (pause) {
+      const t = setTimeout(() => {
+        setPause(false);
+        setIsDeleting(true);
+      }, pauseTime);
+      return () => clearTimeout(t);
+    }
+
+    if (isDeleting) {
+      if (displayText.length > 0) {
+        const t = setTimeout(() => {
+          setDisplayText(displayText.slice(0, -1));
+        }, deleteSpeed);
+        return () => clearTimeout(t);
+      } else {
+        setIsDeleting(false);
+        setIndex((i) => (i + 1) % words.length);
+      }
+    } else {
+      if (displayText.length < word.length) {
+        const t = setTimeout(() => {
+          setDisplayText(word.slice(0, displayText.length + 1));
+        }, speed);
+        return () => clearTimeout(t);
+      } else {
+        setPause(true);
+      }
+    }
+  }, [
+    displayText,
+    isDeleting,
+    pause,
+    words,
+    index,
+    speed,
+    deleteSpeed,
+    pauseTime,
+  ]);
+
+  return (
+    <span className="text-red-500">
+      {displayText}
+      <span ref={cursorRef}>|</span>
+    </span>
+  );
+};
+
+const CodeBlock = () => {
+  const codeRef = useRef<HTMLDivElement>(null);
+  const linesRef = useRef<HTMLDivElement[]>([]);
+
+  useGSAP(() => {
+    if (codeRef.current) {
+      // Animate code block entrance
+      gsap.from(codeRef.current, {
+        scale: 0.9,
+        opacity: 0,
+        duration: 0.8,
+        delay: 1.2,
+        ease: "back.out(1.7)",
+      });
+    }
+
+    // Animate code lines with stagger
+    gsap.from(linesRef.current, {
+      opacity: 0,
+      x: 20,
+      duration: 0.6,
+      stagger: 0.1,
+      delay: 1.5,
+      ease: "power2.out",
+    });
+  }, []);
+
+  return (
+    <div
+      ref={codeRef}
+      className="bg-gray-900 text-green-400 p-6 font-mono text-sm border-4 border-black shadow-[8px_8px_0px_0px_#000] relative overflow-hidden"
+    >
+      <div className="absolute top-2 left-2 flex gap-2">
+        <div className="w-3 h-3 bg-lime-500 rounded-full"></div>
+        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+      </div>
+      <div className="mt-6">
+        <div
+          ref={(el) => {
+            linesRef.current[0] = el!;
+          }}
+          className="text-blue-400"
+        >
+          const
+        </div>
+        <div
+          ref={(el) => {
+            linesRef.current[1] = el!;
+          }}
+          className="text-yellow-400 ml-2"
+        >
+          developer = {"{"}
+        </div>
+        <div
+          ref={(el) => {
+            linesRef.current[2] = el!;
+          }}
+          className="ml-4 text-green-400"
+        >
+          name: {"Brian"},
+        </div>
+        <div
+          ref={(el) => {
+            linesRef.current[3] = el!;
+          }}
+          className="ml-4 text-green-400"
+        >
+          skills: [{"React"}, {"Node"}],
+        </div>
+        <div
+          ref={(el) => {
+            linesRef.current[4] = el!;
+          }}
+          className="ml-4 text-green-400"
+        >
+          passion: {"Building cool stuff"}
+        </div>
+        <div
+          ref={(el) => {
+            linesRef.current[5] = el!;
+          }}
+          className="text-yellow-400"
+        >
+          {"}"}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function PortfolioHero() {
   const cardsRef = useRef<HTMLDivElement[]>([]);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const skillRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const decorElementsRef = useRef<HTMLDivElement[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    gsap.from(cardsRef.current, {
-      opacity: 0,
-      y: 50,
-      duration: 0.8,
-      stagger: 0.3,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: cardsRef.current[0]?.parentElement, // grid container
-        start: "top 80%", // trigger when top of grid hits 80% of viewport
-        toggleActions: "play none none none", // only play once
+    // Create a timeline for orchestrated animations
+    const tl = gsap.timeline();
+
+    // Container entrance
+    if (containerRef.current) {
+      tl.from(containerRef.current, {
+        scale: 0.95,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+    }
+
+    // Headline animation
+    if (headlineRef.current) {
+      tl.from(
+        headlineRef.current.children,
+        {
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          stagger: 0.1,
+          ease: "power3.out",
+        },
+        "-=0.5"
+      );
+    }
+
+    // Skill/typewriter container
+    if (skillRef.current) {
+      tl.from(
+        skillRef.current,
+        {
+          scale: 0.9,
+          opacity: 0,
+          duration: 0.6,
+          ease: "back.out(1.7)",
+        },
+        "-=0.3"
+      );
+    }
+
+    // Description text
+    if (descriptionRef.current) {
+      tl.from(
+        descriptionRef.current,
+        {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+        "-=0.2"
+      );
+    }
+
+    // Buttons
+    if (buttonsRef.current) {
+      tl.from(
+        buttonsRef.current.children,
+        {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power2.out",
+        },
+        "-=0.4"
+      );
+    }
+
+    // Stats cards
+    tl.from(
+      cardsRef.current,
+      {
+        opacity: 0,
+        y: 40,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power2.out",
       },
+      "-=0.3"
+    );
+
+    // Decorative elements
+    gsap.from(decorElementsRef.current, {
+      scale: 0,
+      rotation: 45,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.1,
+      delay: 1.8,
+      ease: "back.out(1.7)",
+    });
+
+    // Floating animation for decorative elements
+    gsap.to(decorElementsRef.current, {
+      y: -10,
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "power2.inOut",
+      stagger: 0.5,
+      delay: 2.5,
     });
   }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-8">
       <div className="max-w-6xl w-full">
-        {/* Main hero container */}
-        <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-12 relative">
-          {/* Decorative accent elements */}
-          <div className="absolute -top-3 -right-3 w-12 h-12 bg-lime-400 border-4 border-black"></div>
-          <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-black"></div>
+        <div
+          ref={containerRef}
+          className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-12 relative"
+        >
+          <div
+            ref={(el) => {
+              decorElementsRef.current[0] = el!;
+            }}
+            className="absolute -top-3 -right-3 w-12 h-12 bg-lime-500 border-4 border-black"
+          />
+          <div
+            ref={(el) => {
+              decorElementsRef.current[1] = el!;
+            }}
+            className="absolute -bottom-2 -left-2 w-8 h-8 bg-black"
+          />
 
-          {/* Content grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left side - Text content */}
             <div>
               <div className="mb-6">
-                <h1 className="text-6xl lg:text-7xl font-black uppercase tracking-wider leading-none mb-4">
-                  HI, I&apos;M
-                  <br />
-                  <div className="text-5xl lg:text-6xl flex items-center">
-                    BRIAN
-                    {/* <HandDrawnSmiley size={85} strokeWidth={3} /> */}
-                  </div>
+                <h1
+                  ref={headlineRef}
+                  className="text-6xl lg:text-7xl font-black uppercase tracking-wider leading-none mb-4"
+                >
+                  <span className="block">HI, I&apos;M</span>
+                  <span className="block text-5xl lg:text-6xl">BRIAN</span>
                 </h1>
-                <div className="w-24 h-2 bg-lime-400 mb-6"></div>
+                <div className="w-24 h-2 bg-lime-500 mb-6"></div>
               </div>
 
-              <h2 className="text-xl lg:text-2xl font-black uppercase tracking-wide mb-8 text-gray-700">
-                YOUR NEXT FULLSTACK
-                <br />
-                DEVELOPER
-              </h2>
+              <div
+                ref={skillRef}
+                className="text-xl lg:text-2xl font-black uppercase tracking-wide mb-8 text-gray-700"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  YOUR NEXT
+                  <span className="inline-block relative h-8 w-48 px-2">
+                    <span className="font-black font-mono">
+                      <TypewriterText words={skillsRotation} />
+                    </span>
+                  </span>
+                </div>
+                <div>DEVELOPER</div>
+              </div>
 
-              <p className="text-base font-mono leading-relaxed mb-5 max-w-lg">
+              <p
+                ref={descriptionRef}
+                className="text-base font-mono leading-relaxed mb-5 max-w-lg"
+              >
                 I BUILD ROBUST, SCALABLE WEB APPLICATIONS THAT DON&apos;T JUST
                 WORK—THEY PERFORM. FROM REACT FRONTENDS TO NODE.JS BACKENDS, I
                 CRAFT DIGITAL EXPERIENCES THAT USERS ACTUALLY WANT TO USE.
               </p>
-              {/* <p className="mt-4 mb-5 text-xs italic font-mono text-gray-600">
-                That drawing? Yeah… I just had to use it somewhere 😂
-              </p> */}
 
-              {/* Action buttons */}
-              <div className="flex flex-wrap gap-4">
+              <div ref={buttonsRef} className="flex flex-wrap gap-4">
                 <Button
                   variant="accent"
                   onClick={() => alert("Opening portfolio...")}
@@ -82,17 +434,17 @@ export default function PortfolioHero() {
               </div>
             </div>
 
-            {/* Right side - Visual element */}
             <div className="relative">
-              {/* Main code block */}
               <CodeBlock />
-
-              {/* Floating accent elements */}
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-lime-400 border-4 border-black transform rotate-12"></div>
+              <div
+                ref={(el) => {
+                  decorElementsRef.current[2] = el!;
+                }}
+                className="absolute -bottom-4 -left-4 w-16 h-16 bg-lime-500 border-4 border-black transform rotate-12"
+              ></div>
             </div>
           </div>
 
-          {/* Bottom stats section */}
           <div className="mt-12 pt-8 border-t-4 border-black">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
@@ -101,13 +453,13 @@ export default function PortfolioHero() {
                   label: "PROJECTS SHIPPED",
                   className: "bg-gray-900 text-white",
                   accent: (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-400 border-2 border-black"></div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-500 border-2 border-black"></div>
                   ),
                 },
                 {
                   icon: "3+",
                   label: "YEARS EXPERIENCE",
-                  className: "bg-lime-400 text-black",
+                  className: "bg-lime-500 text-white",
                 },
                 {
                   icon: "24/7",
@@ -123,7 +475,21 @@ export default function PortfolioHero() {
                   ref={(el) => {
                     cardsRef.current[i] = el!;
                   }}
-                  className={`${card.className} border-4 border-black shadow-[6px_6px_0px_0px_#000] p-4 relative`}
+                  className={`${card.className} border-4 border-black shadow-[6px_6px_0px_0px_#000] p-4 relative cursor-pointer`}
+                  onMouseEnter={(e) => {
+                    gsap.to(e.currentTarget, {
+                      y: -5,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                  }}
+                  onMouseLeave={(e) => {
+                    gsap.to(e.currentTarget, {
+                      y: 0,
+                      duration: 0.3,
+                      ease: "power2.out",
+                    });
+                  }}
                 >
                   {card.accent}
                   <div className="text-2xl font-black">{card.icon}</div>

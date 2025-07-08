@@ -5,21 +5,22 @@ import { Button } from "@/components/button";
 import { BlogPostsList } from "@/modules/blog/ui/component/blog-post-list";
 
 interface BlogPageProps {
-  searchParams: {
+  searchParams: Promise<{
     category?: string;
     tags?: string; // comma-separated tags, e.g. "react,typescript"
     sort?: "newest" | "oldest" | "popular";
-  };
+  }>;
 }
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const filters = {
-    category: searchParams.category || null,
-    tags: searchParams.tags ? searchParams.tags.split(",") : null,
-    sort: searchParams.sort || "newest",
+    category: (await searchParams).category || null,
+    tags: (await searchParams).tags
+      ? (await searchParams).tags!.split(",")
+      : null,
+    sort: (await searchParams).sort || "newest",
   };
   return (
     <div className="min-h-screen bg-gray-100 py-16 px-8">
-      <BlogFilters />
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="mb-16">
@@ -37,6 +38,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           </div>
         </div>
         {/* Blog Posts Grid - now a client component */}
+        <BlogFilters />
         <BlogPostsList filters={filters} />
         {/* Load More Placeholder */}
         <div className="mt-16 text-center">

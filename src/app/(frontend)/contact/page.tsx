@@ -4,6 +4,9 @@ import { Button } from "@/components/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTRPC } from "@/trpc/client";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -15,20 +18,31 @@ const contactSchema = z.object({
 type ContactForm = z.infer<typeof contactSchema>;
 
 export default function Contact() {
+  const trpc = useTRPC();
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
   });
 
-  const onSubmit = async (data: ContactForm) => {
-    console.log("FORM SUBMITTED:", data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    reset();
-    alert("MESSAGE SENT! I'LL GET BACK TO YOU SOON.");
+  const sendEmail = useMutation(
+    trpc.contact.sendEmail.mutationOptions({
+      onSuccess: () => {
+        toast.success("MESSAGE SENT! CHECK YOUR EMAIL FOR CONFIRMATION.");
+        reset();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    })
+  );
+
+  const onSubmit = (data: ContactForm) => {
+    sendEmail.mutate(data);
   };
 
   return (
@@ -59,7 +73,7 @@ export default function Contact() {
                 </p>
                 <div className="pt-4 space-y-2">
                   <div className="font-black">EMAIL:</div>
-                  <div className="text-xs">BRIAN@EXAMPLE.COM</div>
+                  <div className="text-xs">INFO@BRIANKAINE.COM</div>
                   <div className="font-black pt-2">LOCATION:</div>
                   <div className="text-xs">PORT HARCOURT / LAGOS, NIGERIA</div>
                   <div className="font-black pt-2">RESPONSE TIME:</div>
@@ -83,9 +97,38 @@ export default function Contact() {
                 FIND ME ONLINE
               </div>
               <div className="space-y-2 font-mono text-xs">
-                <div>GITHUB.COM/BRIAN</div>
-                <div>LINKEDIN.COM/IN/BRIAN</div>
-                <div>TWITTER.COM/BRIAN</div>
+                <div className="space-y-2">
+                  {/* <a
+                  href="https://github.com/briankaine"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block font-mono text-sm uppercase tracking-wide hover:text-gray-300 transition-colors"
+                >
+                  GITHUB
+                </a> */}
+                  <a
+                    href="https://www.linkedin.com/in/brian-ikeogu-876023199/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block font-mono text-sm uppercase tracking-wide hover:text-gray-300 transition-colors"
+                  >
+                    LINKEDIN
+                  </a>
+                  {/* <a
+                  href="https://twitter.com/briankaine"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block font-mono text-sm uppercase tracking-wide hover:text-gray-300 transition-colors"
+                >
+                  TWITTER
+                </a> */}
+                  <a
+                    href="mailto:info@briankaine.com"
+                    className="block font-mono text-sm uppercase tracking-wide hover:text-gray-300 transition-colors"
+                  >
+                    EMAIL
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -97,6 +140,7 @@ export default function Contact() {
               <h2 className="text-xl font-black uppercase tracking-wide mb-8 border-b-2 border-black pb-2">
                 SEND MESSAGE
               </h2>
+
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Name */}
                 <div>
@@ -182,13 +226,13 @@ export default function Contact() {
                 <div className="pt-4">
                   <Button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={sendEmail.isPending}
                     variant="inverse"
                     className={`bg-lime-400 w-full lg:w-auto ${
-                      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                      sendEmail.isPending ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
-                    {isSubmitting ? "SENDING..." : "SEND MESSAGE"}
+                    {sendEmail.isPending ? "SENDING..." : "SEND MESSAGE"}
                   </Button>
                 </div>
               </form>
