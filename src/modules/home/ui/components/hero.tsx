@@ -366,7 +366,7 @@ export default function PortfolioHero() {
       <div className="max-w-6xl w-full">
         <div
           ref={containerRef}
-          className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-12 relative"
+          className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-6 md:p-12 relative"
         >
           <div
             ref={(el) => {
@@ -381,7 +381,7 @@ export default function PortfolioHero() {
             className="absolute -bottom-2 -left-2 w-8 h-8 bg-black"
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-12 items-center">
             <div>
               <div className="mb-6">
                 <h1
