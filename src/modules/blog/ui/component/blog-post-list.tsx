@@ -22,21 +22,30 @@ export async function BlogPostsList({ filters }: BlogPostsListProps) {
     published: true,
   };
 
+  // Handle category filter via slug on related category
   if (filters.category) {
-    where.categoryId = filters.category;
+    where.category = {
+      slug: filters.category,
+    };
   }
 
-  if (filters.tags?.length) {
-    where.tags = { hasSome: filters.tags };
+  // Handle tags filter
+  if (filters.tags && filters.tags.length > 0) {
+    where.tags = {
+      hasSome: filters.tags,
+    };
   }
 
-  let orderBy: Prisma.BlogOrderByWithRelationInput = {
-    publishedAt: "desc",
-  };
+  // Handle sort option
+  let orderBy: Prisma.BlogOrderByWithRelationInput = { publishedAt: "desc" };
 
-  if (filters.sort === "oldest") orderBy = { publishedAt: "asc" };
-  if (filters.sort === "popular") orderBy = { views: "desc" };
+  if (filters.sort === "oldest") {
+    orderBy = { publishedAt: "asc" };
+  } else if (filters.sort === "popular") {
+    orderBy = { views: "desc" };
+  }
 
+  // Fetch blog posts
   let blogPosts: BlogWithCategory[] = [];
 
   try {

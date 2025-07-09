@@ -2,6 +2,8 @@
 import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 const skillsRotation = [
   "FULLSTACK",
@@ -161,23 +163,29 @@ const CodeBlock = () => {
 
   useGSAP(() => {
     if (codeRef.current) {
-      // Animate code block entrance
       gsap.from(codeRef.current, {
+        scrollTrigger: {
+          trigger: codeRef.current,
+          start: "top 80%", // trigger when top of block hits 80% viewport
+          toggleActions: "play none none reset",
+        },
         scale: 0.9,
         opacity: 0,
         duration: 0.8,
-        delay: 1.2,
         ease: "back.out(1.7)",
       });
     }
 
-    // Animate code lines with stagger
     gsap.from(linesRef.current, {
+      scrollTrigger: {
+        trigger: codeRef.current,
+        start: "top 80%",
+        toggleActions: "play none none reset",
+      },
       opacity: 0,
       x: 20,
       duration: 0.6,
       stagger: 0.1,
-      delay: 1.5,
       ease: "power2.out",
     });
   }, []);
@@ -251,7 +259,7 @@ export default function PortfolioHero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const skillRef = useRef<HTMLDivElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
+
   const decorElementsRef = useRef<HTMLDivElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -312,21 +320,6 @@ export default function PortfolioHero() {
       );
     }
 
-    // Buttons
-    if (buttonsRef.current) {
-      tl.from(
-        buttonsRef.current.children,
-        {
-          y: 20,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-        },
-        "-=0.4"
-      );
-    }
-
     // Stats cards
     tl.from(
       cardsRef.current,
@@ -383,9 +376,9 @@ export default function PortfolioHero() {
             className="absolute -bottom-2 -left-2 w-8 h-8 bg-black"
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-12 items-center">
             <div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <h1
                   ref={headlineRef}
                   className="text-6xl lg:text-7xl font-black uppercase tracking-wider leading-none mb-4"
@@ -398,7 +391,7 @@ export default function PortfolioHero() {
 
               <div
                 ref={skillRef}
-                className="text-xl lg:text-2xl font-black uppercase tracking-wide mb-8 text-gray-700"
+                className="text-xl lg:text-2xl font-black uppercase tracking-wide mb-6 text-gray-700"
               >
                 <div className="flex flex-wrap items-center gap-2">
                   YOUR NEXT
@@ -413,14 +406,14 @@ export default function PortfolioHero() {
 
               <p
                 ref={descriptionRef}
-                className="text-base font-mono leading-relaxed mb-5 max-w-lg"
+                className="text-base font-mono leading-relaxed mb-2 max-w-lg"
               >
                 I BUILD ROBUST, SCALABLE WEB APPLICATIONS THAT DON&apos;T JUST
                 WORK—THEY PERFORM. FROM REACT FRONTENDS TO NODE.JS BACKENDS, I
                 CRAFT DIGITAL EXPERIENCES THAT USERS ACTUALLY WANT TO USE.
               </p>
 
-              <div ref={buttonsRef} className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4">
                 <Button
                   variant="accent"
                   onClick={() => alert("Opening portfolio...")}
@@ -477,10 +470,10 @@ export default function PortfolioHero() {
                   ref={(el) => {
                     cardsRef.current[i] = el!;
                   }}
-                  className={`${card.className} border-4 border-black shadow-[6px_6px_0px_0px_#000] p-4 relative cursor-pointer`}
+                  className={`${card.className} border-4 border-black shadow-[6px_6px_0px_0px_#000] p-4 relative`}
                   onMouseEnter={(e) => {
                     gsap.to(e.currentTarget, {
-                      y: -5,
+                      y: -1,
                       duration: 0.3,
                       ease: "power2.out",
                     });

@@ -254,20 +254,28 @@ export const blogRouter = createTRPCRouter({
   getFilteredPosts: baseProcedure
     .input(
       z.object({
-        categoryId: z.string().optional(),
+        categorySlug: z.string().optional(), // <-- renamed from categoryId
         tags: z.array(z.string()).optional(),
         sort: z.enum(["newest", "oldest", "popular"]).optional(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const { categoryId, tags, sort } = input;
+      const { categorySlug, tags, sort } = input;
+
+      // Resolve categoryId from the slug if provided
+      let categoryId: string | undefined;
+      if (categorySlug) {
+        const category = await ctx.db.category.findUnique({
+          where: { slug: categorySlug },
+        });
+        categoryId = category?.id;
+      }
 
       const where: Prisma.BlogWhereInput = {
         published: true,
-        ...(categoryId &&
-          categoryId !== "" && {
-            categoryId: categoryId,
-          }),
+        ...(categoryId && {
+          categoryId,
+        }),
         ...(tags &&
           tags.length > 0 && {
             tags: { hasSome: tags },

@@ -41,7 +41,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         <BlogFilters />
         <BlogPostsList filters={filters} />
         {/* Load More Placeholder */}
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <div className="bg-gray-900 border-4 border-black shadow-[12px_12px_0px_0px_#666] p-8 relative inline-block">
             <div className="absolute -top-2 -left-2 w-6 h-6 bg-lime-400 border-2 border-black"></div>
             <h3 className="text-xl font-black uppercase text-white mb-4">
@@ -58,11 +58,11 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               LOAD MORE POSTS
             </Button>
           </div>
-        </div>
+        </div> */}
         {/* Blog Stats - you'll need to pass the client-side fetched length here */}
         {/* You'll need to pass the actual length from BlogPostsList if you want it to reflect current filters */}
         {/* For now, just pass a placeholder or remove until actual data is available */}
-        <BlogStats length={0} />{" "}
+        {/* <BlogStats length={0} />{" "} */}
         {/* Adjust this based on your client-side data */}
       </div>
     </div>

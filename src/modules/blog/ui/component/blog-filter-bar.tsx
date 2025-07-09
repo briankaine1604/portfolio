@@ -52,7 +52,7 @@ export function BlogFilters() {
           <option value="">All</option>
           {categories &&
             categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
+              <option key={cat.slug} value={cat.slug}>
                 {cat.name}
               </option>
             ))}

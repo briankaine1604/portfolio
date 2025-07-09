@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { ProjectCard } from "@/modules/projects/ui/components/project-card";
 import { Status } from "@/modules/types";
 import { Project } from "@prisma/client";
+import Link from "next/link";
 
 export default async function Projects() {
   let projects: Project[] = [];
@@ -63,7 +64,7 @@ export default async function Projects() {
             </p>
 
             <button className="bg-black text-white border-4 border-black shadow-[6px_6px_0px_0px_#666] hover:shadow-[10px_10px_0px_0px_#666] px-6 py-3 font-black uppercase tracking-wide text-sm transform transition-all duration-200 active:translate-x-2 active:translate-y-2 active:shadow-none">
-              VIEW ALL PROJECTS
+              <Link href={"/projects"}>VIEW ALL PROJECTS</Link>
             </button>
           </div>
         </div>

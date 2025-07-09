@@ -1,8 +1,11 @@
+"use client";
 import { Button } from "@/components/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function About() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-gray-100 py-16 px-8">
       <div className="max-w-6xl mx-auto">
@@ -91,8 +94,8 @@ export default function About() {
                 <div className="bg-black text-lime-400 border-2 border-lime-400 p-3 font-mono text-xs">
                   <div className="font-black">BACKEND</div>
                   <div className="mt-1">
-                    Node.js • Bun • PHP • Laravel • Mongo DB • PostgreSQL •
-                    Prisma • Drizzle • Payload
+                    Node.js • Hono.js • Bun • PHP • Laravel • Mongo DB •
+                    PostgreSQL • Prisma • Drizzle • Payload
                   </div>
                 </div>
                 <div className="bg-black text-lime-400 border-2 border-lime-400 p-3 font-mono text-xs">
@@ -177,7 +180,11 @@ export default function About() {
             WORK ON NEW PROJECTS AND COLLABORATE WITH FELLOW CREATORS.
           </p>
 
-          <Button variant={"inverse"} className=" bg-lime-400">
+          <Button
+            variant={"inverse"}
+            className=" bg-lime-400"
+            onClick={() => router.push("/contact")}
+          >
             START A PROJECT
           </Button>
         </div>
