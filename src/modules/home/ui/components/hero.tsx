@@ -6,7 +6,9 @@ import gsap from "gsap";
 const skillsRotation = [
   "FULLSTACK",
   "FRONTEND",
+  "NEXT.JS",
   "BACKEND",
+  "TYPESCRIPT",
   "REACT",
   "NODE.JS",
   "GSAP",
