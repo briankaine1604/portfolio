@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { Button } from "../button";
+import { Button } from "./button";
 import { usePathname } from "next/navigation";
 
 export function Navbar() {

@@ -57,7 +57,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               src={thumbnail}
               alt={title}
               layout="fill"
-              objectFit="cover"
+              style={{ objectFit: "cover" }}
               className="absolute inset-0"
             />
           </div>

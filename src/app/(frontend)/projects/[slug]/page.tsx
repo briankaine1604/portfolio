@@ -150,8 +150,6 @@ const Page = async ({ params }: Props) => {
             {/* Stats */}
             <div className="flex gap-4 text-sm font-mono text-gray-600">
               <span>{project.views} views</span>
-              <span>•</span>
-              <span>{project.likes} likes</span>
               {project.completedAt && (
                 <>
                   <span>•</span>
@@ -167,7 +165,7 @@ const Page = async ({ params }: Props) => {
 
         {/* Main content area */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left column - Media */}
+          {/* Left column - Media & Core Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Main image/video */}
             {project.thumbnail && (
@@ -197,13 +195,25 @@ const Page = async ({ params }: Props) => {
               </div>
             )}
 
-            {/* Additional images */}
+            {/* What I Learned - moved here for better visibility */}
+            {project.learnings && (
+              <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-6">
+                <h3 className="font-black uppercase tracking-wide mb-4 text-lg">
+                  WHAT I LEARNED
+                </h3>
+                <div className="font-mono text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">
+                  {project.learnings}
+                </div>
+              </div>
+            )}
+
+            {/* Additional images - moved to bottom of left column */}
             {project.images && project.images.length > 0 && (
               <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-4">
                 <h3 className="font-black uppercase tracking-wide mb-4 text-lg">
                   MORE SCREENSHOTS
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {project.images.map((image, i) => (
                     <div
                       key={i}
@@ -222,7 +232,7 @@ const Page = async ({ params }: Props) => {
             )}
           </div>
 
-          {/* Right column - Details */}
+          {/* Right column - Project Details */}
           <div className="space-y-8">
             {/* Long description */}
             {project.longDescription && (
@@ -230,9 +240,10 @@ const Page = async ({ params }: Props) => {
                 <h3 className="font-black uppercase tracking-wide mb-4 text-lg">
                   ABOUT THIS PROJECT
                 </h3>
-                <div className="font-mono text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">
-                  {project.longDescription}
-                </div>
+                <div
+                  className="prose font-mono text-sm leading-relaxed text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: project.longDescription }}
+                />
               </div>
             )}
 
@@ -244,18 +255,6 @@ const Page = async ({ params }: Props) => {
                 </h3>
                 <div className="font-mono text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">
                   {project.challenges}
-                </div>
-              </div>
-            )}
-
-            {/* Learnings */}
-            {project.learnings && (
-              <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-6">
-                <h3 className="font-black uppercase tracking-wide mb-4 text-lg">
-                  WHAT I LEARNED
-                </h3>
-                <div className="font-mono text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">
-                  {project.learnings}
                 </div>
               </div>
             )}
@@ -272,7 +271,6 @@ const Page = async ({ params }: Props) => {
                 <div>$ git log --oneline</div>
                 <div className="text-green-400">✓ Project completed</div>
                 <div className="text-blue-400">✓ {project.views} visitors</div>
-                <div className="text-yellow-400">✓ {project.likes} stars</div>
                 <div className="text-gray-400 mt-3">
                   Created: {new Date(project.createdAt).toLocaleDateString()}
                 </div>
@@ -281,6 +279,25 @@ const Page = async ({ params }: Props) => {
                 </div>
               </div>
             </div>
+
+            {/* Tech Stack Details - new addition */}
+            {project.tech && project.tech.length > 0 && (
+              <div className="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] p-6">
+                <h3 className="font-black uppercase tracking-wide mb-4 text-lg">
+                  TECH STACK
+                </h3>
+                <div className="space-y-2">
+                  {project.tech.map((tech, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-lime-400 border border-black"></div>
+                      <span className="font-mono text-sm text-gray-700">
+                        {tech}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
