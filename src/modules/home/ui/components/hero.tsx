@@ -3,6 +3,8 @@ import { useRef, useEffect, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
+import { Button } from "@/components/button";
 gsap.registerPlugin(ScrollTrigger);
 
 const skillsRotation = [
@@ -17,66 +19,6 @@ const skillsRotation = [
   "PAYLOAD",
   "ECOMMERCE",
 ];
-
-const Button = ({
-  variant,
-  onClick,
-  children,
-}: {
-  variant: "primary" | "accent";
-  onClick: () => void;
-  children: React.ReactNode;
-}) => {
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useGSAP(() => {
-    if (buttonRef.current) {
-      // Hover animations with GSAP
-      const handleMouseEnter = () => {
-        gsap.to(buttonRef.current, {
-          x: 4,
-          y: 4,
-          duration: 0.2,
-          ease: "power2.out",
-        });
-      };
-
-      const handleMouseLeave = () => {
-        gsap.to(buttonRef.current, {
-          x: 0,
-          y: 0,
-          duration: 0.2,
-          ease: "power2.out",
-        });
-      };
-
-      buttonRef.current?.addEventListener("mouseenter", handleMouseEnter);
-      buttonRef.current?.addEventListener("mouseleave", handleMouseLeave);
-
-      return () => {
-        buttonRef.current?.removeEventListener("mouseenter", handleMouseEnter);
-        buttonRef.current?.removeEventListener("mouseleave", handleMouseLeave);
-      };
-    }
-  }, []);
-
-  const base =
-    "px-6 py-3 font-black uppercase tracking-wide border-4 border-black transition-all duration-200";
-  const variants = {
-    primary: "bg-black text-white shadow-[4px_4px_0px_0px_#000]",
-    accent: "bg-red-500 text-white shadow-[4px_4px_0px_0px_#000]",
-  };
-
-  return (
-    <button
-      ref={buttonRef}
-      className={`${base} ${variants[variant]}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-};
 
 const TypewriterText = ({
   words,
@@ -193,7 +135,7 @@ const CodeBlock = () => {
   return (
     <div
       ref={codeRef}
-      className="bg-gray-900 text-green-400 p-6 font-mono text-sm border-4 border-black shadow-[8px_8px_0px_0px_#000] relative overflow-hidden"
+      className="bg-gray-900 text-green-400 p-6 font-mono text-sm border-4 border-black shadow-[8px_8px_0px_0px_#000] relative overflow-hidden mt-3"
     >
       <div className="absolute top-2 left-2 flex gap-2">
         <div className="w-3 h-3 bg-lime-500 rounded-full"></div>
@@ -262,6 +204,13 @@ export default function PortfolioHero() {
 
   const decorElementsRef = useRef<HTMLDivElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const scrollToProjects = () => {
+    const el = document.getElementById("projects");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   useGSAP(() => {
     // Create a timeline for orchestrated animations
@@ -376,7 +325,7 @@ export default function PortfolioHero() {
             className="absolute -bottom-2 -left-2 w-8 h-8 bg-black"
           />
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-12 items-center">
             <div>
               <div className="mb-4">
                 <h1
@@ -406,7 +355,7 @@ export default function PortfolioHero() {
 
               <p
                 ref={descriptionRef}
-                className="text-base font-mono leading-relaxed mb-2 max-w-lg"
+                className="text-base font-mono leading-relaxed mb-4 max-w-lg"
               >
                 I BUILD ROBUST, SCALABLE WEB APPLICATIONS THAT DON&apos;T JUST
                 WORK—THEY PERFORM. FROM REACT FRONTENDS TO NODE.JS BACKENDS, I
@@ -414,17 +363,11 @@ export default function PortfolioHero() {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <Button
-                  variant="accent"
-                  onClick={() => alert("Opening portfolio...")}
-                >
+                <Button className="bg-red-500" onClick={scrollToProjects}>
                   VIEW WORK
                 </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => alert("Opening contact...")}
-                >
-                  GET IN TOUCH
+                <Button className="bg-gray-900 text-white">
+                  <Link href={"/contact"}>GET IN TOUCH</Link>
                 </Button>
               </div>
             </div>

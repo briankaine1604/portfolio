@@ -1,7 +1,5 @@
 // app/blog/page.tsx
 import { BlogFilters } from "@/modules/blog/ui/component/blog-filter-bar";
-import { BlogStats } from "./components/blog-stats";
-import { Button } from "@/components/button";
 import { BlogPostsList } from "@/modules/blog/ui/component/blog-post-list";
 
 interface BlogPageProps {

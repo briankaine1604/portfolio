@@ -18,7 +18,7 @@ export default async function Projects() {
   }
 
   return (
-    <section className="bg-gray-100 py-20 px-8">
+    <section id="projects" className="bg-gray-100 py-20 px-8">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="mb-16">
