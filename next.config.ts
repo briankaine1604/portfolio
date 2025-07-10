@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "test.com",
+        hostname: "utfs.io",
         pathname: "/**",
       },
     ],
