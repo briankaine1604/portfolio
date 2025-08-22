@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
+import Image from "next/image";
 
 type Filters = {
   category?: string | null;
@@ -68,10 +69,14 @@ export async function BlogPostsList({ filters }: BlogPostsListProps) {
           >
             <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-400 border-2 border-black"></div>
 
-            <div className="bg-gray-200 border-b-4 border-black h-48 flex items-center justify-center">
+            <div className="bg-gray-200 border-b-4 border-black h-48 flex items-center justify-center relative">
               <div className="text-center font-mono text-sm">
-                <div className="font-black uppercase">POST</div>
-                <div className="text-xs mt-1">IMAGE</div>
+                <Image
+                  src={post.ogImage ?? "/default-og.png"}
+                  fill
+                  alt={post.title}
+                  objectFit="cover"
+                />
               </div>
             </div>
 

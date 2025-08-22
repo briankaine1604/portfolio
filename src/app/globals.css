@@ -201,3 +201,269 @@
   border-top: 2px solid #e9ecef;
   margin: 2rem 0;
 }
+
+/* Tiptap Content Styles for Brutalist Blog Theme */
+
+.tiptap-content {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas,
+    "Liberation Mono", Menlo, monospace;
+}
+
+/* Tiptap paragraph styling */
+.tiptap-content p {
+  margin-bottom: 24px;
+  line-height: 1.8;
+  color: #374151;
+}
+
+.tiptap-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tiptap heading styles */
+.tiptap-content h1,
+.tiptap-content h2,
+.tiptap-content h3,
+.tiptap-content h4,
+.tiptap-content h5,
+.tiptap-content h6 {
+  font-weight: 900;
+  color: #1f2937;
+  border-bottom: 3px solid #000;
+  padding-bottom: 8px;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tiptap-content h1 {
+  font-size: 2rem;
+}
+.tiptap-content h2 {
+  font-size: 1.75rem;
+}
+.tiptap-content h3 {
+  font-size: 1.5rem;
+}
+.tiptap-content h4 {
+  font-size: 1.25rem;
+}
+.tiptap-content h5 {
+  font-size: 1.125rem;
+}
+.tiptap-content h6 {
+  font-size: 1rem;
+}
+
+/* Tiptap list styles */
+.tiptap-content ul,
+.tiptap-content ol {
+  margin: 24px 0;
+  padding-left: 32px;
+}
+
+.tiptap-content li {
+  margin: 8px 0;
+  line-height: 1.7;
+}
+
+.tiptap-content ul li {
+  list-style-type: none;
+  position: relative;
+}
+
+.tiptap-content ul li::before {
+  content: "■";
+  position: absolute;
+  left: -20px;
+  color: #000;
+  font-weight: bold;
+}
+
+.tiptap-content ol li {
+  list-style-type: decimal;
+  font-weight: bold;
+}
+
+/* Tiptap text formatting */
+.tiptap-content strong {
+  font-weight: 900;
+  color: #1f2937;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.tiptap-content em {
+  font-style: italic;
+  background: #fef3c7;
+  padding: 2px 4px;
+  border: 1px solid #f59e0b;
+}
+
+/* Tiptap code styles */
+.tiptap-content code {
+  background: #f3f4f6;
+  color: #1f2937;
+  padding: 4px 8px;
+  border: 2px solid #d1d5db;
+  font-size: 0.875rem;
+  font-family: inherit;
+}
+
+.tiptap-content pre {
+  background: #1f2937;
+  color: #10b981;
+  padding: 24px;
+  border: 4px solid #000;
+  margin: 24px 0;
+  overflow-x: auto;
+  border-radius: 0;
+}
+
+.tiptap-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #10b981;
+  font-size: 0.875rem;
+}
+
+/* Tiptap blockquote */
+.tiptap-content blockquote {
+  border-left: 8px solid #000;
+  background: #fef3c7;
+  padding: 16px 24px;
+  margin: 24px 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.tiptap-content blockquote::before {
+  content: '"';
+  font-size: 4rem;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  color: #000;
+  font-weight: 900;
+}
+
+/* Tiptap links */
+.tiptap-content a {
+  color: #3b82f6;
+  text-decoration: underline;
+  font-weight: 700;
+  border-bottom: 2px solid #3b82f6;
+  transition: all 0.2s;
+}
+
+.tiptap-content a:hover {
+  color: #1d4ed8;
+  background: #dbeafe;
+  padding: 2px 4px;
+  text-decoration: none;
+  border-bottom: 2px solid #1d4ed8;
+}
+
+/* Tiptap images */
+.tiptap-content img {
+  max-width: 100%;
+  height: auto;
+  border: 4px solid #000;
+  margin: 24px 0;
+  box-shadow: 8px 8px 0px 0px #000;
+}
+
+/* Tiptap horizontal rule */
+.tiptap-content hr {
+  border: none;
+  height: 4px;
+  background: #000;
+  margin: 32px 0;
+  position: relative;
+}
+
+.tiptap-content hr::after {
+  content: "■ ■ ■";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 0 16px;
+  color: #000;
+  font-weight: 900;
+}
+
+/* Tiptap tables */
+.tiptap-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 24px 0;
+  border: 4px solid #000;
+}
+
+.tiptap-content th,
+.tiptap-content td {
+  border: 2px solid #000;
+  padding: 12px;
+  text-align: left;
+}
+
+.tiptap-content th {
+  background: #000;
+  color: #10b981;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tiptap-content tr:nth-child(even) td {
+  background: #f9fafb;
+}
+
+/* Tiptap task lists (if you use them) */
+.tiptap-content ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tiptap-content ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+}
+
+.tiptap-content ul[data-type="taskList"] li::before {
+  display: none; /* Remove the bullet for task lists */
+}
+
+.tiptap-content ul[data-type="taskList"] li input[type="checkbox"] {
+  margin-right: 12px;
+  margin-top: 4px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000;
+  appearance: none;
+  background: white;
+}
+
+.tiptap-content ul[data-type="taskList"] li input[type="checkbox"]:checked {
+  background: #10b981;
+}
+
+.tiptap-content
+  ul[data-type="taskList"]
+  li
+  input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  display: block;
+  text-align: center;
+  line-height: 12px;
+}
