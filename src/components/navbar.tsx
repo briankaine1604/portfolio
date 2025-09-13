@@ -25,7 +25,7 @@ export function Navbar() {
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-4">
               <Link
                 href="/projects"
                 className={`font-black uppercase tracking-wide text-sm transition-colors hover:text-gray-600 ${
@@ -33,6 +33,14 @@ export function Navbar() {
                 }`}
               >
                 MY WORK
+              </Link>
+              <Link
+                href="/snippets"
+                className={`font-black uppercase tracking-wide text-sm transition-colors hover:text-gray-600 ${
+                  pathname === "/snippets" ? "text-lime-500" : ""
+                }`}
+              >
+                SNIPPETS
               </Link>
               <Link
                 href="/about"
@@ -50,7 +58,7 @@ export function Navbar() {
               >
                 BLOG
               </Link>
-              <Button>
+              <Button className="px-4 py-2 ml-3">
                 <Link
                   href="/contact"
                   className={`${
@@ -58,6 +66,14 @@ export function Navbar() {
                   }`}
                 >
                   CONTACT
+                </Link>
+              </Button>
+              <Button className="bg-lime-400 text-black border-black px-3 py-2 -ml-1">
+                <Link
+                  href="https://drive.google.com/file/d/1GmCH8NH9IH54XRqJDwZC6CmmCazpp8yu/view?usp=sharing"
+                  target="_blank"
+                >
+                  MY CV
                 </Link>
               </Button>
             </div>
@@ -79,7 +95,7 @@ export function Navbar() {
                 <Link
                   href="/projects"
                   className={`block font-black uppercase tracking-wide transition-colors ${
-                    pathname === "/projects"
+                    pathname === "/snippets"
                       ? "text-lime-400"
                       : "text-white hover:text-lime-400"
                   }`}
@@ -119,6 +135,14 @@ export function Navbar() {
                   >
                     CONTACT
                   </button>
+                </Link>
+
+                <Link
+                  href="https://drive.google.com/file/d/1GmCH8NH9IH54XRqJDwZC6CmmCazpp8yu/view?usp=sharing"
+                  target="_blank"
+                  className={`w-full border-4 border-black shadow-[4px_4px_0px_0px_#000] px-4 py-2 font-black uppercase tracking-wide text-sm mt-3 transform transition-all duration-200 active:translate-x-1 active:translate-y-1 active:shadow-none bg-lime-600 text-white `}
+                >
+                  CV
                 </Link>
               </div>
             </div>
